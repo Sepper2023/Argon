@@ -2714,6 +2714,159 @@ function MacLib:Window(Settings)
 					    for i,v in pairs(dropdownFrame:GetChildren()) do
                   				v:Destroy()
               				    end
+
+					        local option = Instance.new("TextButton")
+						option.Name = "Option"
+						option.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+						option.Text = ""
+						option.TextColor3 = Color3.fromRGB(0, 0, 0)
+						option.TextSize = 14
+						option.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						option.BackgroundTransparency = 1
+						option.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						option.BorderSizePixel = 0
+						option.Size = UDim2.new(1, 0, 0, 30)
+						
+						local optionUIPadding = Instance.new("UIPadding")
+						optionUIPadding.Name = "OptionUIPadding"
+						optionUIPadding.PaddingLeft = UDim.new(0, 15)
+						optionUIPadding.Parent = option
+						
+						local optionName = Instance.new("TextLabel")
+						optionName.Name = "OptionName"
+						optionName.FontFace = Font.new(
+						    "rbxassetid://12187365364",
+						    Enum.FontWeight.Medium,
+						    Enum.FontStyle.Normal
+						)
+						optionName.Text = v
+						optionName.RichText = true
+						optionName.TextColor3 = Color3.fromRGB(255, 255, 255)
+						optionName.TextSize = 13
+						optionName.TextTransparency = 0.5
+						optionName.TextTruncate = Enum.TextTruncate.AtEnd
+						optionName.TextXAlignment = Enum.TextXAlignment.Left
+						optionName.TextYAlignment = Enum.TextYAlignment.Top
+						optionName.AnchorPoint = Vector2.new(0, 0.5)
+						optionName.AutomaticSize = Enum.AutomaticSize.XY
+						optionName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						optionName.BackgroundTransparency = 1
+						optionName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						optionName.BorderSizePixel = 0
+						optionName.Position = UDim2.fromScale(1.3e-07, 0.5)
+						optionName.Parent = option
+						
+						local optionUIListLayout = Instance.new("UIListLayout")
+						optionUIListLayout.Name = "OptionUIListLayout"
+						optionUIListLayout.Padding = UDim.new(0, 10)
+						optionUIListLayout.FillDirection = Enum.FillDirection.Horizontal
+						optionUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+						optionUIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+						optionUIListLayout.Parent = option
+						
+						local checkmark = Instance.new("TextLabel")
+						checkmark.Name = "Checkmark"
+						checkmark.FontFace = Font.new(
+						    "rbxassetid://12187365364",
+						    Enum.FontWeight.Medium,
+						    Enum.FontStyle.Normal
+						)
+						checkmark.Text = "✓"
+						checkmark.TextColor3 = Color3.fromRGB(255, 255, 255)
+						checkmark.TextSize = 13
+						checkmark.TextTransparency = 1
+						checkmark.TextXAlignment = Enum.TextXAlignment.Left
+						checkmark.TextYAlignment = Enum.TextYAlignment.Top
+						checkmark.AnchorPoint = Vector2.new(0, 0.5)
+						checkmark.AutomaticSize = Enum.AutomaticSize.Y
+						checkmark.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						checkmark.BackgroundTransparency = 1
+						checkmark.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						checkmark.BorderSizePixel = 0
+						checkmark.LayoutOrder = -1
+						checkmark.Position = UDim2.fromScale(1.3e-07, 0.5)
+						checkmark.Size = UDim2.fromOffset(-10, 0)
+						checkmark.Parent = option
+						
+						option.Parent = dropdownFrame
+						
+						dropdownFrame.Parent = dropdown
+						OptionObjs[v] = {
+						    Index = i,
+						    Button = option,
+						    NameLabel = optionName,
+						    Checkmark = checkmark
+						}
+						
+						local dropdownUIPadding = Instance.new("UIPadding")
+						dropdownUIPadding.Name = "DropdownUIPadding"
+						dropdownUIPadding.PaddingLeft = UDim.new(0, 15)
+						dropdownUIPadding.PaddingRight = UDim.new(0, 15)
+						dropdownUIPadding.Parent = dropdown
+						
+						local tweensettings = {
+						    duration = 0.2,
+						    easingStyle = Enum.EasingStyle.Quint,
+						    transparencyIn = 0.2,
+						    transparencyOut = 0.5,
+						    checkSizeIncrease = 12,
+						    checkSizeDecrease = -optionUIListLayout.Padding.Offset,
+						    waitTime = 1
+						}
+						local tweens = {
+						    checkIn = Tween(checkmark, TweenInfo.new(tweensettings.duration, tweensettings.easingStyle), {
+						        Size = UDim2.new(checkmark.Size.X.Scale, tweensettings.checkSizeIncrease, checkmark.Size.Y.Scale, checkmark.Size.Y.Offset)
+						    }),
+						    checkOut = Tween(checkmark, TweenInfo.new(tweensettings.duration, tweensettings.easingStyle),{
+						        Size = UDim2.new(checkmark.Size.X.Scale, tweensettings.checkSizeDecrease, checkmark.Size.Y.Scale, checkmark.Size.Y.Offset)
+						    }),
+						    nameIn = Tween(optionName, TweenInfo.new(tweensettings.duration, tweensettings.easingStyle),{
+						        TextTransparency = tweensettings.transparencyIn
+						    }),
+						    nameOut = Tween(optionName, TweenInfo.new(tweensettings.duration, tweensettings.easingStyle),{
+						        TextTransparency = tweensettings.transparencyOut
+						    })
+						}
+						
+						local isSelected = false
+						if Settings.Default then
+						    if Settings.Multi then
+						        isSelected = table.find(Settings.Default, v) and true or false
+						    else
+						        isSelected = (Settings.Default == i) and true or false
+						    end
+						end
+						Toggle(v, isSelected)
+						
+						local option = OptionObjs[v].Button
+						
+						option.MouseButton1Click:Connect(function()
+						    local isSelected = table.find(Selected, v) and true or false
+						    local newSelected = not isSelected
+						
+						    if Settings.Required and not newSelected and #Selected <= 1 then
+						        return
+						    end
+						
+						    Toggle(v, newSelected)
+						
+						    task.spawn(function()
+						        if Settings.Multi then
+						            local Return = {}
+						            for _, opt in ipairs(Selected) do
+						                Return[opt] = true
+						            end
+						            if Settings.Callback then
+						                Settings.Callback(Return)
+						            end
+						            
+						        else
+						            if newSelected and Settings.Callback then
+						                Settings.Callback(Selected[1] or nil)
+						            end
+						        end
+						    end)
+						end)
 					end
 
 					function DropdownFunctions:SetVisibility(State)
