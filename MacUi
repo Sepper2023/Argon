@@ -2710,10 +2710,10 @@ function MacLib:Window(Settings)
 						dropdownName.Text = New
 					end
 
-          function DropdownFunctions:SetOptions(Opt)
-					    for i,v in pairs(OptionObjs) do
-                  v:Destroy()
-              end
+          				function DropdownFunctions:SetOptions(Opt)
+					    for i,v in pairs(dropdownFrame:GetChildren()) do
+                  				v:Destroy()
+              				    end
 					end
 
 					function DropdownFunctions:SetVisibility(State)
