@@ -2842,11 +2842,11 @@ function Library:SetWatermark(Text)
 end;
 
 function Library:Notify(Text, Time)
-    local XSize, YSize = Library.GetTextBounds(Text, Library.Font, 14);
+    local XSize, YSize = Library.GetTextBounds(Library,Text, Library.Font, 14);
 
     YSize = YSize + 7
 
-    local NotifyOuter = Library:Create('Frame', {
+    local NotifyOuter = Library.Create(Library,'Frame', {
         BorderColor3 = Color3.new(0, 0, 0);
         Position = UDim2.new(0, 100, 0, 10);
         Size = UDim2.new(0, 0, 0, YSize);
@@ -2855,7 +2855,7 @@ function Library:Notify(Text, Time)
         Parent = Library.NotificationArea;
     });
 
-    local NotifyInner = Library:Create('Frame', {
+    local NotifyInner = Library.Create(Library,'Frame', {
         BackgroundColor3 = Library.MainColor;
         BorderColor3 = Library.OutlineColor;
         BorderMode = Enum.BorderMode.Inset;
@@ -2864,12 +2864,12 @@ function Library:Notify(Text, Time)
         Parent = NotifyOuter;
     });
 
-    Library:AddToRegistry(NotifyInner, {
+    Library.AddToRegistry(Library,NotifyInner, {
         BackgroundColor3 = 'MainColor';
         BorderColor3 = 'OutlineColor';
     }, true);
 
-    local InnerFrame = Library:Create('Frame', {
+    local InnerFrame = Library.Create(Library,'Frame', {
         BackgroundColor3 = Color3.new(1, 1, 1);
         BorderSizePixel = 0;
         Position = UDim2.new(0, 1, 0, 1);
@@ -2878,7 +2878,7 @@ function Library:Notify(Text, Time)
         Parent = NotifyInner;
     });
 
-    local Gradient = Library:Create('UIGradient', {
+    local Gradient = Library.Create(Library,'UIGradient', {
         Color = ColorSequence.new({
             ColorSequenceKeypoint.new(0, Library:GetDarkerColor(Library.MainColor)),
             ColorSequenceKeypoint.new(1, Library.MainColor),
@@ -2887,7 +2887,7 @@ function Library:Notify(Text, Time)
         Parent = InnerFrame;
     });
 
-    Library:AddToRegistry(Gradient, {
+    Library.AddToRegistry(Library,Gradient, {
         Color = function()
             return ColorSequence.new({
                 ColorSequenceKeypoint.new(0, Library:GetDarkerColor(Library.MainColor)),
@@ -2896,7 +2896,7 @@ function Library:Notify(Text, Time)
         end
     });
 
-    local NotifyLabel = Library:CreateLabel({
+    local NotifyLabel = Library.CreateLabel(Library,{
         Position = UDim2.new(0, 4, 0, 0);
         Size = UDim2.new(1, -4, 1, 0);
         Text = Text;
@@ -2906,7 +2906,7 @@ function Library:Notify(Text, Time)
         Parent = InnerFrame;
     });
 
-    local LeftColor = Library:Create('Frame', {
+    local LeftColor = Library.Create(Library,'Frame', {
         BackgroundColor3 = Library.AccentColor;
         BorderSizePixel = 0;
         Position = UDim2.new(0, -1, 0, -1);
@@ -2915,7 +2915,7 @@ function Library:Notify(Text, Time)
         Parent = NotifyOuter;
     });
 
-    Library:AddToRegistry(LeftColor, {
+    Library.AddToRegistry(Library,LeftColor, {
         BackgroundColor3 = 'AccentColor';
     }, true);
 
