@@ -14,7 +14,7 @@ local SaveManager = {} do
 			warn("toggled: "..Toggles[idx].TextLabel.Text.." on!")
                         Toggles[idx]:SetValue(data.value)
                     else
-                        warn("Ignored toggle: "..Toggles[idx].TextLabel.Text..", because it was already on!")
+                        warn("Ignored toggle: "..Toggles[idx].TextLabel.Text..", because it was already the same as the config!")
                     end
 				end
 			end,
