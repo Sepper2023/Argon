@@ -10,10 +10,11 @@ local SaveManager = {} do
 			end,
 			Load = function(idx, data)
 				if Toggles[idx] then 
-           for i,v in pairs(Toggles[idx]) do
-              print(i,v)
-           end
-					 Toggles[idx]:SetValue(data.value)
+                    if Toggles[idx].Value ~= data.value then
+                        Toggles[idx]:SetValue(data.value)
+                    else
+                        warn("Ignored toggle because it was already on!")
+                    end
 				end
 			end,
 		},
