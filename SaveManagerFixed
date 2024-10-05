@@ -11,9 +11,10 @@ local SaveManager = {} do
 			Load = function(idx, data)
 				if Toggles[idx] then 
                     if Toggles[idx].Value ~= data.value then
+			warn("toggled: "..Toggles[idx].TextLabel.Text.." on!")
                         Toggles[idx]:SetValue(data.value)
                     else
-                        warn("Ignored toggle because it was already on!")
+                        warn("Ignored toggle: "..Toggles[idx].TextLabel.Text..", because it was already on!")
                     end
 				end
 			end,
